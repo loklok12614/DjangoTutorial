@@ -1,0 +1,31 @@
+{%extends "main/base.html" %}
+
+{% block title%}Lok's Website - Create New List{% endblock %}
+
+{% block content%}
+    <div id="header" style="background-color:#d3e1eb;flex:1;text-align:center;">
+        <h1>Create Page</h1>
+        <h1>Hello</h1>
+    </div>
+    {% if messages %}
+    <div>
+        <ul class="messages">
+            {% for message in messages %}
+            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <form method="post" action="/create/">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit", name="save", style="font-size: 14px;width: 100%; max-width: 10em;">
+            Create List
+        </button>
+    </form>
+    <script>
+        function show_alert(){
+            alert('{{ message }}');
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {%block title%}Lok's Website {%endblock%}
+    </title>
+</head>
+<body>
+    <div id="content", name="content">
+        {% block content %}
+            <h1>{{name}}</h1>
+            <div>
+                <li>{{item1.text}}</li>
+                <li>{{item2.text}}</li>
+            </div>
+        {% endblock %}
+    </div>
+</body>
+</html>

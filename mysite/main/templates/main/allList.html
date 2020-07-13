@@ -1,0 +1,13 @@
+{%extends "main/base.html"%}
+
+{%block title%}Lok's Website - All Lists{%endblock%}
+
+{%block content%}
+    <h1>All To-do Lists: </h1>
+    <ul>
+
+        {%for list in ls.all %}
+            <li><a href="/list/{{ list.id }}">{{list.name}}</a></li>
+        {%endfor%}
+    </ul>
+{%endblock%}

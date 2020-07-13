@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+
+{%block title%}Lok's Website - View List{%endblock%}
+
+{%block content%}
+    <h1>{{ls.name}}</h1>
+    <div id="completed" style="font-size:20px">
+        <p>Completed: </p>
+    </div>
+    <ul>
+        {% for item in ls.item_set.all %}
+            {% if item.complete == True %}
+                <li>{{item.text}} - Complete</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <div id="incomplete" style="font-size:20px">
+        <p>Incomplete: </p>
+    </div>
+    <ul>
+        {% for item in ls.item_set.all %}
+            {% if item.complete == False %}
+                <li>{{item.text}} - Incomplete</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{%endblock%}
