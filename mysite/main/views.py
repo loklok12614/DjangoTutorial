@@ -36,7 +36,6 @@ def home(response):
     return render(response, "main/home.html", {})
 
 def create(response):
-    message = ""
     if response.method == "POST":
         form = CreateNewList(response.POST)
         if form.is_valid():
