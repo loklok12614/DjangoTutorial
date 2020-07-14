@@ -6,7 +6,7 @@
     <h1>{{ls.name}}</h1>
     <form method="post" action="#">
         {% csrf_token %}
-        <ul>
+        <ul class="items">
             {% for item in ls.item_set.all %}
                 {% if item.complete == True %}
                     <li><input type="checkbox", value="clicked", name="c{{item.id}}" checked>{{item.text}}</li>

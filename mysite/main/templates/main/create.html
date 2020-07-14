@@ -3,25 +3,26 @@
 {% block title%}Lok's Website - Create New List{% endblock %}
 
 {% block content%}
-    <div id="header" style="background-color:#d3e1eb;flex:1;text-align:center;">
-        <h1>Create Page</h1>
-        <h1>Hello</h1>
-    </div>
+    <h3>Create Page</h3>
     {% if messages %}
     <div>
-        <ul class="messages">
+        <ul class="alert alert-primary">
             {% for message in messages %}
-            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+            <li  class="mt-0 mb-0 ml-2 mr-2"> {{ message }} </li>
             {% endfor %}
         </ul>
     </div>
     {% endif %}
-    <form method="post" action="/create/">
+    <form method="post" action="/create/" class="form-group">
         {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit", name="save", style="font-size: 14px;width: 100%; max-width: 10em;">
-            Create List
-        </button>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <button type="submit", name="save" class="btn btn-success">
+                    Create List
+                </button>
+            </div>
+            {{form.name}}
+        </div>
     </form>
     <script>
         function show_alert(){
