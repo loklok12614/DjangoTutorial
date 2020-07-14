@@ -3,21 +3,29 @@
 {%block title%}Lok's Website - View List{%endblock%}
 
 {%block content%}
-    <h1>{{ls.name}}</h1>
+    <h3>{{ls.name}}</h3>
     <form method="post" action="#">
         {% csrf_token %}
-        <ul class="items">
-            {% for item in ls.item_set.all %}
-                {% if item.complete == True %}
-                    <li><input type="checkbox", value="clicked", name="c{{item.id}}" checked>{{item.text}}</li>
-
-                {% else %}
-                    <li><input type="checkbox", value="clicked", name="c{{item.id}}">{{item.text}}</li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-        <button type="submit", name="save", value="save">Save</button>
-        <input type="text", name="new">
-        <button type="submit", name="newItem", value="newItem">Add Item</button>
+        {% for item in ls.item_set.all %}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    {% if item.complete == True %}
+                        <input type="checkbox", value="clicked", name="c{{item.id}}" checked>
+                    {% else %}
+                        <input type="checkbox", value="clicked", name="c{{item.id}}">
+                    {% endif %}
+                </div>
+            </div>
+            <input type="text", value="{{item.text}}", name="t{{item.id}}", class="form-control">
+        </div>
+        {% endfor %}
+        <div class="input-group mt-1 mb-1">
+            <div class="input-group-prepend">
+                <button type="submit", name="newItem", value="newItem" class="btn btn-success">Add Item</button>
+            </div>
+            <input type="text", name="new">
+            <button type="submit", name="save", value="save" class="btn btn-primary ml-3">Save</button>
+        </div>
     </form>
 {%endblock%}

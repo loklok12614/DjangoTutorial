@@ -39,8 +39,9 @@ def list(response, id):
                     item.complete = True
                 else:
                     item.complete = False
-
+                item.text = response.POST.get("t" + str(item.id))
                 item.save()
+            
         elif response.POST.get("newItem"):
             txt = response.POST.get("new")
 
