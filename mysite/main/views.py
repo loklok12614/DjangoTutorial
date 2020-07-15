@@ -30,7 +30,6 @@ def allList(response):
 
 def list(response, id):
     ls = ToDoList.objects.get(id=id)
-
     if response.method == "POST":
         print(response.POST)
         if response.POST.get("save"):
@@ -49,6 +48,11 @@ def list(response, id):
                 ls.item_set.create(text=txt, complete=False)
             else:
                 print("Invalid")
+        #handle delete item
+        for item in ls.item_set.all():
+            if response.POST.get("delete" + str(item.id)):
+                item.delete()
+                messages.info(response, "An item has been deleted!")
     return render(response, "main/list.html", {"ls":ls})
 
 def home(response):
