@@ -22,7 +22,7 @@ def index1(response, name):
     items = ls.item_set.all()
     return HttpResponse("<h1>%s</h1>"
                         "</br>"
-                        "<p>%s</p>" %(ls.name,items[0].text))
+                        "<p>%s</p>" %(ls.name, items[0].text))
 
 def allList(response):
     ls = ToDoList.objects
@@ -52,7 +52,7 @@ def list(response, id):
         for item in ls.item_set.all():
             if response.POST.get("delete" + str(item.id)):
                 item.delete()
-                messages.info(response, "An item has been deleted!")
+                messages.info(response, "Item <strong>%s</strong> has been deleted!" %item.text, extra_tags="safe")
     return render(response, "main/list.html", {"ls":ls})
 
 def home(response):
