@@ -46,6 +46,7 @@ def list(response, id):
 
             if len(txt) > 2:
                 ls.item_set.create(text=txt, complete=False)
+                messages.success(response, "Item <strong>%s</strong> has been added!" %txt, extra_tags="safe")
             else:
                 print("Invalid")
         #handle delete item
@@ -65,7 +66,7 @@ def create(response):
             n = form.cleaned_data["name"]
             t = ToDoList(name=n)
             t.save()
-            messages.info(response, "New List - %s - Created!" %n)
+            messages.success(response, "New List <strong>%s</strong> Created!" %n, extra_tags="safe")
         #return render(response, "main/create.html", {"form":form, "message":message})
         #return HttpResponseRedirect("/list/%i" %t.id)
     else:

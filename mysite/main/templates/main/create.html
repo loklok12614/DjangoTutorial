@@ -4,15 +4,6 @@
 
 {% block content%}
     <h3>Create Page</h3>
-    {% if messages %}
-    <div>
-        <ul class="alert alert-primary">
-            {% for message in messages %}
-            <li  class="mt-0 mb-0 ml-2 mr-2"> {{ message }} </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
     <form method="post" action="/create/" class="form-group">
         {% csrf_token %}
         <div class="input-group mb-3">

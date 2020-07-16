@@ -35,6 +35,9 @@
             margin-top: 6px;
             padding: 0px 10px;
         }
+        .main-content{
+            margin-top: 50px;
+        }
         .messages{
             z-index: 1;
             position:fixed;
@@ -66,19 +69,21 @@
         <div class="row justify-content-center"> 
             {% if messages %}
             <div class="messages col-8">
-                <ul class="alert alert-primary" id="primary-alert">
+                
                     {% for message in messages %}
-                        <li  class="mt-0 mb-0 ml-2 mr-2">
-                            {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </li>
+                        <ul class="alert {% for tag in message.tags.split %}{% if tag != 'safe'%}alert-{{tag}} {% endif %}{% endfor %}" id="primary-alert">
+                            <li  class="mt-0 mb-0 ml-2 mr-2">
+                                {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </li>
+                        </ul>
                     {% endfor %}
-                </ul>
+                
             </div>
             {% endif %}   
-            <div class="col-8">
+            <div class="main-content col-8">
                 <h1 class="mt-2">Lok's Website</h1>
                 <hr class="mt-0 mb-4">
                 {% block content %}
