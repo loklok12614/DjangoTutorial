@@ -7,4 +7,21 @@ Logged out
 {% block content %}
     <p>Logged out.</p>
     <p>Click <a href="/login">Here</a> to login again.</p>
+    <div id="timer"><p>The page will be redirected in 5 seconds.</p></div>
+    <script>
+        let timeleft = 4;
+        let redirectTimer = setInterval(() => {
+            if(timeleft < 0){
+                clearInterval(redirectTimer);
+            }
+            else{
+                document.getElementById("timer").innerHTML = "The page will be redirected in  " + timeleft + " seconds.";
+            }
+            timeleft -= 1;
+        }, 1000);
+        function redirect(){
+            window.location.href = "/";
+        }
+        setTimeout(redirect, 5000);
+    </script>
 {% endblock %}

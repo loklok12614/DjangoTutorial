@@ -36,7 +36,6 @@ def allList(response):
 def list(response, id):
     ls = ToDoList.objects.get(id=id)
     if response.method == "POST":
-        print(response.POST)
         if response.POST.get("save"):
             for item in ls.item_set.all():
                 if response.POST.get("c" + str(item.id)):
@@ -54,6 +53,13 @@ def list(response, id):
                 messages.success(response, "Item <strong>%s</strong> has been added!" %txt, extra_tags="safe")
             else:
                 print("Invalid")
+
+        elif response.POST.get("saveNameBtn"):
+            newName = response.POST.get("newName")
+            ls.name = newName
+            ls.save()
+            messages.success(response, "List's name has been changed!", extra_tags="safe")
+
         #handle delete item
         for item in ls.item_set.all():
             if response.POST.get("delete" + str(item.id)):
