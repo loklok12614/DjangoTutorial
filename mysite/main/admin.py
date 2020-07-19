@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(ToDoList)
 admin.site.register(Item)
 admin.site.register(Item1)
+admin.site.register(MovieList)

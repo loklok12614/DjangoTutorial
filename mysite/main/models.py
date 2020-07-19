@@ -22,3 +22,9 @@ class Item1(models.Model):
 
     def __str__(self):
         return self.text
+
+class MovieList(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name

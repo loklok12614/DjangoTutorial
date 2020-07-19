@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from .models import ToDoList, Item, Item1
 from .form import CreateNewList
 
 # Create your views here.
 
+@login_required
 def index(response, id):
     ls = ToDoList.objects.get(id=id)
     my_dict = {"name": ls.name}
@@ -16,6 +18,7 @@ def index(response, id):
         item_counter = item_counter + 1
     return render(response, "main/base.html", my_dict)
 
+@login_required
 def index1(response, name):
     ls = ToDoList.objects.get(name=name)
     #item = ls.item_set.create(text="Buy apples", complete=False)
@@ -24,10 +27,12 @@ def index1(response, name):
                         "</br>"
                         "<p>%s</p>" %(ls.name, items[0].text))
 
+@login_required
 def allList(response):
     ls = ToDoList.objects
     return render(response, "main/allList.html", {"ls":ls})
 
+@login_required
 def list(response, id):
     ls = ToDoList.objects.get(id=id)
     if response.method == "POST":
@@ -56,9 +61,11 @@ def list(response, id):
                 messages.info(response, "Item <strong>%s</strong> has been deleted!" %item.text, extra_tags="safe")
     return render(response, "main/list.html", {"ls":ls})
 
+@login_required
 def home(response):
     return render(response, "main/home.html", {})
 
+@login_required
 def create(response):
     if response.method == "POST":
         form = CreateNewList(response.POST)
