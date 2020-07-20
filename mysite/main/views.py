@@ -85,3 +85,7 @@ def create(response):
     else:
         form = CreateNewList()
     return render(response, "main/create.html", {"form":form})
+
+@login_required
+def upload(response):
+    return render(response, "main/upload.html", {})
