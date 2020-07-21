@@ -6,4 +6,11 @@ Upload
 
 {% block content %}
 <h3>Upload Form</h3>
+<div class="input-group mb-3">
+    <ul>
+        {% for movie in movieList.movie_set.all %}
+            <li>{{movie.title}}</li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

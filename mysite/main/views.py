@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from .models import ToDoList, Item, Item1
-from .form import CreateNewList
+from .models import ToDoList, Item, Item1, MovieList, Movie
+from .form import CreateNewList, UploadFileForm
 
 # Create your views here.
 
@@ -29,12 +29,13 @@ def index1(response, name):
 
 @login_required
 def allList(response):
-    ls = ToDoList.objects
+    ls = response.user.todolist_set.all()
     return render(response, "main/allList.html", {"ls":ls})
 
 @login_required
 def list(response, id):
-    ls = ToDoList.objects.get(id=id)
+    # ls = ToDoList.objects.get(id=id)
+    ls = get_object_or_404(ToDoList, id=id)
     if response.method == "POST":
         if response.POST.get("save"):
             for item in ls.item_set.all():
@@ -77,15 +78,14 @@ def create(response):
         form = CreateNewList(response.POST)
         if form.is_valid():
             n = form.cleaned_data["name"]
-            t = ToDoList(name=n)
-            t.save()
-            messages.success(response, "New List <strong>%s</strong> Created!" %n, extra_tags="safe")
-        #return render(response, "main/create.html", {"form":form, "message":message})
+            l = response.user.todolist_set.create(name=n)
+            messages.success(response, "New List <strong>'{0}'</strong> Created! Click <a href='/list/{1}'>here</a> to view.".format(n, l.id), extra_tags="safe")
         #return HttpResponseRedirect("/list/%i" %t.id)
     else:
         form = CreateNewList()
     return render(response, "main/create.html", {"form":form})
 
 @login_required
-def upload(response):
-    return render(response, "main/upload.html", {})
+def upload(response, id):
+    movieList = MovieList.objects.get(id=id)
+    return render(response, "main/upload.html", {"movieList":movieList})
