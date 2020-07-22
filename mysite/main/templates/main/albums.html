@@ -1,0 +1,24 @@
+{%extends "main/base.html"%}
+
+{%block title%}Your Albums{%endblock%}
+
+{%block content%}
+    <h3>Your Albums: </h3>
+    {% if albums %}
+        {%for album in albums %}
+            <li><a href="/album/{{ album.id }}">{{album.title}}</a></li>
+        {%endfor%}
+    {% else %}
+        <p>You don't have any album. You can create one below.</p>
+    {% endif %}
+
+    <form method="POST" action="/albums/" class="form-group">
+        {% csrf_token %}
+        <div class="input-group mb-3 mt-3">
+            <div class="input-group-prepend">
+                <button type="submit" class="btn btn-success" name="create">Create Album</button>
+            </div>
+            {{form.title}}
+        </div>
+    </form>
+{%endblock%}

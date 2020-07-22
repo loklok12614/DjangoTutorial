@@ -3,6 +3,5 @@ from .models import *
 # Register your models here.
 admin.site.register(ToDoList)
 admin.site.register(Item)
-admin.site.register(Item1)
-admin.site.register(MovieList)
-admin.site.register(Movie)
+admin.site.register(PhotoAlbum)
+admin.site.register(Photo)

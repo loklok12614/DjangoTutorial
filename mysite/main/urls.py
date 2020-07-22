@@ -8,6 +8,8 @@ urlpatterns = [
     path("list/", views.allList, name="allList"),
     path("list/<int:id>", views.list, name="list"),
     path("create/", views.create, name="create"),
-    path("upload/<int:id>", views.upload, name="upload"),
+    path("albums/", views.albums, name="albums"),
+    path("album/<int:id>", views.album, name="album"),
+    path("upload/", views.upload, name="upload"),
 ]
 #path("<int:id>", views.index, name="index"),
