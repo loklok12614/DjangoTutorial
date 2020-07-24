@@ -2,14 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from .models import ToDoList, Item, Item1, MovieList, Movie, PhotoAlbum, Photo
-from .form import CreateNewList, CreateNewAlbum, UploadFileForm
-
-from PIL import Image
-
+from .models import ToDoList, Item, Item1, MovieList, Movie
+from .form import CreateNewList
 
 # Create your views here.
-
 @login_required
 def index(response, id):
     ls = ToDoList.objects.get(id=id)
@@ -87,39 +83,3 @@ def create(response):
     else:
         form = CreateNewList()
     return render(response, "main/create.html", {"form":form})
-
-@login_required
-def albums(response):
-    albums = response.user.photoalbum_set.all()
-    if response.method == "POST":
-        form = CreateNewAlbum(response.POST)
-        if form.is_valid():
-            t = form.cleaned_data["title"]
-            newAlbum = response.user.photoalbum_set.create(title=t)
-            messages.success(response, "New Album <strong>'{0}'</strong> Created! Click <a href='/album/{1}'>here</a> to view.".format(t, newAlbum.id), extra_tags="safe")
-    else:
-        form = CreateNewAlbum()
-    
-    return render(response, "main/albums.html", {"albums":albums, "form":form})
-
-@login_required
-def album(response, id):
-    photoalbum = response.user.photoalbum_set.get(id=id)
-    return render(response, "main/album.html", {"photoalbum":photoalbum})
-
-@login_required
-def upload(response):
-    albumid = id
-    if (response.method == "POST"):
-        form = UploadFileForm(response.user, response.POST, response.FILES)
-        # form.photoalbum.queryset = response.user.photoalbum_set.all().order_by('title')
-        if form.is_valid():
-            album = form.cleaned_data["album"]
-            photoalbum = response.user.photoalbum_set.get(title=album)
-            caption = form.cleaned_data["caption"]
-            img = response.FILES['img']
-            photo = photoalbum.photo_set.create(caption=caption, img=img)
-            messages.success(response, "Image uploaded.", extra_tags="safe")
-    else:
-        form = UploadFileForm(response.user)
-    return render(response, "main/upload.html", {"form":form, "albumid": albumid})
