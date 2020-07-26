@@ -24,8 +24,7 @@ def albums(response):
 
 @login_required
 def album(response, id):
-    # photoalbum = response.user.photoalbum_set.get(id=id)
-    photoalbum = PhotoAlbum.objects.get(id=id)
+    photoalbum = response.user.photoalbum_set.get(id=id)
     return render(response, "upload/album.html", {"photoalbum":photoalbum})
 
 @login_required
@@ -43,14 +42,6 @@ def upload(response):
     else:
         form = UploadFileForm(response.user)
     return render(response, "upload/upload.html", {"form":form, "albumid": albumid})
-
-# class UserAlbumsList(ListView):
-#     model = PhotoAlbum
-#     template_name = "upload/user_albums.html"
-#     context_object_name = "albums_by_user"
-
-#     def get_queryset(self):
-#         return PhotoAlbum.objects.filter(user = self.kwargs['pk'])
 
 def UserAlbumsList(response, pk):
     user = User.objects.get(pk= pk)
