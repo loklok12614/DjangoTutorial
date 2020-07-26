@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .models import PhotoAlbum, Photo
 from .forms import CreateNewAlbum, UploadFileForm
 
@@ -9,6 +10,7 @@ from .forms import CreateNewAlbum, UploadFileForm
 @login_required
 def albums(response):
     albums = response.user.photoalbum_set.all()
+    # albums = PhotoAlbum.objects.all()
     if response.method == "POST":
         form = CreateNewAlbum(response.POST)
         if form.is_valid():
@@ -22,7 +24,8 @@ def albums(response):
 
 @login_required
 def album(response, id):
-    photoalbum = response.user.photoalbum_set.get(id=id)
+    # photoalbum = response.user.photoalbum_set.get(id=id)
+    photoalbum = PhotoAlbum.objects.get(id=id)
     return render(response, "upload/album.html", {"photoalbum":photoalbum})
 
 @login_required
@@ -40,3 +43,16 @@ def upload(response):
     else:
         form = UploadFileForm(response.user)
     return render(response, "upload/upload.html", {"form":form, "albumid": albumid})
+
+# class UserAlbumsList(ListView):
+#     model = PhotoAlbum
+#     template_name = "upload/user_albums.html"
+#     context_object_name = "albums_by_user"
+
+#     def get_queryset(self):
+#         return PhotoAlbum.objects.filter(user = self.kwargs['pk'])
+
+def UserAlbumsList(response, pk):
+    user = User.objects.get(pk= pk)
+    albums = user.photoalbum_set.all()
+    return render(response, "upload/user_albums.html", {"albums":albums})

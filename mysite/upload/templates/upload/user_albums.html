@@ -1,0 +1,14 @@
+{%extends "main/base.html"%}
+
+{%block title%}Your Albums{%endblock%}
+
+{%block content%}
+    <h3>Your Albums: </h3>
+    {% if albums %}
+        {%for album in albums %}
+            <li>{{album.title}}</li>
+        {%endfor%}
+    {% else %}
+        <p>This user does not have any album.</p>
+    {% endif %}
+{%endblock%}
