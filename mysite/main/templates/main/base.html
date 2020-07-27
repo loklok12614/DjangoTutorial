@@ -57,6 +57,26 @@
         .sidenav .icon{
             display:none;
         }
+        @media screen and (max-width: 600px){
+            .sidenav a:not(:first-child){display: none;}
+            .sidenav a.icon{
+                float: right;
+                display: block;
+            }
+        }
+        @media screen{
+            .sidenav.responsive{position: relative;}
+            .sidenav.responsive .icon{
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+        }
+        .sidenav.responsive a{
+            float: none;
+            display: block;
+            text-align: left;
+        }
         .main{
             height: 100%;
             margin-top: 6px;
@@ -69,6 +89,8 @@
             z-index: 1;
             position:fixed;
         }
+
+        /*Style for album pages*/
         .album-box{
 
         }
@@ -202,12 +224,15 @@
             <a href="/list/">View All Lists</a>
             <a href="/albums/">Albums</a>
             <a href="/upload/">Upload</a>
-            <a href="javascript:void(0);" class="icon" onclick="addClass()">
+            <a href="javascript:void(0);" class="icon" onclick="sidenavShow()">
                 <i class="fa fa-bars"></i>
             </a>
         {% else %}
             <a href="/home/">Home</a>
             <a href="/register/">Register</a>
+            <a href="javascript:void(0);" class="icon" onclick="sidenavShow()">
+                <i class="fa fa-bars"></i>
+            </a>
         {% endif %}
     </div>
 
@@ -258,6 +283,10 @@
                 link.classList.add("active");
             }
         })
+        function sidenavShow(){
+            let x = document.getElementById("mySidenav");
+            (x.className === "sidenav")? (x.className += " responsive") : (x.className = "sidenav");
+        }
     </script>
 
 </body>

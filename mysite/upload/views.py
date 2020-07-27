@@ -27,6 +27,11 @@ def album(response, id):
     photoalbum = response.user.photoalbum_set.get(id=id)
     return render(response, "upload/album.html", {"photoalbum":photoalbum})
 
+def UserAlbumsList(response, pk):
+    the_user = User.objects.get(pk= pk)
+    albums = the_user.photoalbum_set.all()
+    return render(response, "upload/user_albums.html", {"albums":albums, "the_user":the_user})
+
 @login_required
 def upload(response):
     albumid = id
@@ -42,8 +47,3 @@ def upload(response):
     else:
         form = UploadFileForm(response.user)
     return render(response, "upload/upload.html", {"form":form, "albumid": albumid})
-
-def UserAlbumsList(response, pk):
-    user = User.objects.get(pk= pk)
-    albums = user.photoalbum_set.all()
-    return render(response, "upload/user_albums.html", {"albums":albums})
