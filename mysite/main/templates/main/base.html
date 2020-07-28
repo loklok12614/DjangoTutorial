@@ -58,7 +58,8 @@
             display:none;
         }
         @media screen and (max-width: 600px){
-            .sidenav a:not(:first-child){display: none;}
+            .sidenav a:not(.active){display: none;}
+            .sidenav a:first-child{display: block;}
             .sidenav a.icon{
                 float: right;
                 display: block;
