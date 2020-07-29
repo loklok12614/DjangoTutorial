@@ -2,20 +2,14 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from .models import ToDoList, Item, Item1, MovieList, Movie
 from .form import CreateNewList
 
 # Create your views here.
 @login_required
-def index(response, id):
-    ls = ToDoList.objects.get(id=id)
-    my_dict = {"name": ls.name}
-    item_counter = 1
-    for x in ls.item_set.all():
-        item_name = "item" + str(item_counter)
-        my_dict[item_name] = x
-        item_counter = item_counter + 1
-    return render(response, "main/base.html", my_dict)
+def index(response):
+    return render(response, "main/base.html", {})
 
 @login_required
 def index1(response, name):
@@ -83,3 +77,17 @@ def create(response):
     else:
         form = CreateNewList()
     return render(response, "main/create.html", {"form":form})
+
+@login_required
+def get_queryset(query = None):
+    queryset = []
+    queries = query.split(" ")
+    for q in queries:
+        users = User.objects.filter(
+            Q(username__icontains=q) |
+            Q(email__icontains=q)
+        ).distinct()
+        
+        for user in users:
+            queryset.append(user)
+    return list(set(queryset))

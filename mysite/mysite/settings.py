@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'register.apps.RegisterConfig',
     'upload.apps.UploadConfig',
     'django.contrib.admin',
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'main.context_processors.add_variable_to_context',
             ],
         },
     },

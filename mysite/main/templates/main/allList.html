@@ -5,7 +5,6 @@
 {%block content%}
     <h3>All To-do Lists: </h3>
     <ul>
-
         {%for list in ls %}
             <li><a href="/list/{{ list.id }}">{{list.name}}</a></li>
         {%endfor%}
