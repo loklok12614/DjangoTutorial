@@ -10,18 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <style type="text/css">
-        /* .sidenav{
-            height:100%;
-            min-width:160px;
-            max-width: 25%;
-            position:fixed;
-            z-index: 1;
-            top:0;
-            left:0;
-            background-color: #111;
-            overflow-x: hidden;
-            padding-top: 20px;
-        } */
         body{
             font-family: 'Roboto', sans-serif;
         }
@@ -35,19 +23,12 @@
             left:0;
             top:0;
         }
-        /* .sidenav a{
-            padding: 6px 8px 8px 16px;
-            text-decoration: none;
-            font-size: 25px;
-            color: #b4b0b0;
-            display: block;
-        } */
         .sidenav a{
-            padding: 10px 14px;
+            padding: 6px 14px;
             margin: 5px 5px;
             text-decoration: none;
             float: left;
-            font-size: 22px;
+            font-size: 18px;
             color: #b4b0b0;
             border-radius: 8px;
             display: block;
@@ -70,6 +51,13 @@
         }
         .sidenav .searchbar-icon svg{
             padding-top: 5px;
+        }
+        .sidenav .searchbar{
+            max-width: 30%;
+            width: 400px;
+            margin: 5px 5px;
+            position:static;
+            float: left;
         }
         @media screen and (max-width: 800px){
             .sidenav .account{display: none;}
@@ -249,6 +237,11 @@
                         <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
                     </svg>
                 </a>
+                <div class="searchbar">
+                    <form method="GET">
+                        <input type="text" class="form-control" name="q" id="id_q" placeholder="search...">
+                    </form>
+                </div>
             </div>
             <a href="javascript:void(0);" class="icon" onclick="showSidenav()">
                 <i class="fa fa-bars"></i>
