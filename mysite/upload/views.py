@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.views import View
 from .models import PhotoAlbum, Photo
 from .forms import CreateNewAlbum, UploadFileForm
 
@@ -21,6 +22,32 @@ def albums(response):
         form = CreateNewAlbum()
     
     return render(response, "upload/albums.html", {"albums":albums, "form":form})
+
+class AlbumsView(View):
+    albums = []
+    images = []
+    form = CreateNewAlbum
+    initial = {'title': 'new'}
+    template_name = 'upload/albums.html'
+
+    def setup(self, request, *args, **kwargs):
+        self.request = request
+        self.args = args
+        self.kwargs = kwargs
+        self.albums = request.user.photoalbum_set.all()
+        super()
+
+    def get(self, request, *args, **kwargs):
+        form = self.form(initial=self.initial)
+        return render(request, self.template_name, {"form": form, "albums":self.albums})
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form(request.POST)
+        if form.is_valid():
+            t = form.cleaned_data["title"]
+            newAlbum = request.user.photoalbum_set.create(title=t)
+            messages.success(request, "New Album <strong>'{0}'</strong> Created! Click <a href='/album/{1}'>here</a> to view.".format(t, newAlbum.id), extra_tags="safe")
+        return render(request, self.template_name, {"form":form, "albums":self.albums})
 
 @login_required
 def album(response, id):

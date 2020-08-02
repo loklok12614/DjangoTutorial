@@ -7,6 +7,12 @@
     {% if albums %}
         {%for album in albums %}
             <li><a href="/album/{{ album.id }}">{{album.title}}</a></li>
+            <div class="img-frame">
+                <img src="{{photo.img.url}}" class="album-img" id="img{{photo.id}}">
+                <div class="caption-effect">
+                    <div class="caption">{{photo.caption}}</div>
+                </div>
+            </div>
         {%endfor%}
     {% else %}
         <p>You don't have any album. You can create one below.</p>

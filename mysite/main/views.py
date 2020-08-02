@@ -60,8 +60,7 @@ def list(response, id):
                 item.delete()
                 messages.info(response, "Item <strong>%s</strong> has been deleted!" %item.text, extra_tags="safe")
     return render(response, "main/list.html", {"ls":ls})
-
-@login_required
+    
 def home(response):
     return render(response, "main/home.html", {})
 
