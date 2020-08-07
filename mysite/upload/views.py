@@ -25,7 +25,8 @@ def albums(response):
 
 class AlbumsView(View):
     albums = []
-    images = []
+    albums_images = []
+    albums_dict = dict()
     form = CreateNewAlbum
     initial = {'title': 'new'}
     template_name = 'upload/albums.html'
@@ -35,19 +36,26 @@ class AlbumsView(View):
         self.args = args
         self.kwargs = kwargs
         self.albums = request.user.photoalbum_set.all()
+        for album in self.albums:
+            images = album.photo_set.first()
+            self.albums_images.append(images)
+        self.albums_dict = dict(zip(self.albums, self.albums_images))
         super()
 
     def get(self, request, *args, **kwargs):
         form = self.form(initial=self.initial)
-        return render(request, self.template_name, {"form": form, "albums":self.albums})
+        return render(request, self.template_name, {"form": form, "albums":self.albums, "albums_images":self.albums_images, "albums_dict":self.albums_dict})
     
     def post(self, request, *args, **kwargs):
         form = self.form(request.POST)
         if form.is_valid():
             t = form.cleaned_data["title"]
-            newAlbum = request.user.photoalbum_set.create(title=t)
-            messages.success(request, "New Album <strong>'{0}'</strong> Created! Click <a href='/album/{1}'>here</a> to view.".format(t, newAlbum.id), extra_tags="safe")
-        return render(request, self.template_name, {"form":form, "albums":self.albums})
+            if(request.user.photoalbum_set.get(title=t)):
+                messages.warning(request, "Album with the name <strong>'{0}'</strong> already exist! Please choose another name.".format(t), extra_tags="safe")
+            else:
+                newAlbum = request.user.photoalbum_set.create(title=t)
+                messages.success(request, "New Album <strong>'{0}'</strong> Created! Click <a href='/album/{1}'>here</a> to view.".format(t, newAlbum.id), extra_tags="safe")
+        return render(request, self.template_name, {"form":form, "albums":self.albums, "albums_images":self.albums_images, "albums_dict":self.albums_dict})
 
 @login_required
 def album(response, id):

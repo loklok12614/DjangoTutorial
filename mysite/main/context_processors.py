@@ -10,8 +10,5 @@ def add_variable_to_context(request):
     if request.GET:
         query = request.GET['q']
         context['query'] = str(query)
-        return HttpResponseRedirect("/lists" %t.id)
-    else:
-        pass
     context['users'] = User.objects.filter(Q(username__icontains='o'))
     return context

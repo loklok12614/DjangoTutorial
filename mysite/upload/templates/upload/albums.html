@@ -5,14 +5,18 @@
 {%block content%}
     <h3>Your Albums: </h3>
     {% if albums %}
-        {%for album in albums %}
-            <li><a href="/album/{{ album.id }}">{{album.title}}</a></li>
-            <div class="img-frame">
-                <img src="{{photo.img.url}}" class="album-img" id="img{{photo.id}}">
-                <div class="caption-effect">
-                    <div class="caption">{{photo.caption}}</div>
+        {%for key, value in albums_dict.items %}
+            <li><a href="/album/{{ key.id }}">{{key.title}}</a></li>
+            {% if value %}
+                <div class="img-frame">
+                    <img src="{{value.img.url}}" class="album-img" id="img{{photo.id}}">
+                    <div class="caption-effect">
+                        <div class="caption">{{key.title}}</div>
+                    </div>
                 </div>
-            </div>
+            {% else%}
+                <p>This album is empty.</p>
+            {% endif %}
         {%endfor%}
     {% else %}
         <p>You don't have any album. You can create one below.</p>
