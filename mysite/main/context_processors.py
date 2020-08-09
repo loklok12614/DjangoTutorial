@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect
+import urllib
+from main.views import get_queryset
 
 
 def add_variable_to_context(request):
@@ -8,7 +11,10 @@ def add_variable_to_context(request):
 
     query = ""
     if request.GET:
-        query = request.GET['q']
-        context['query'] = str(query)
-    context['users'] = User.objects.filter(Q(username__icontains='o'))
+        if(request.GET['q']):
+            query = request.GET['q']
+            context['query'] = str(query)
+            profiles = get_queryset(query)
+            context['profiles'] = profiles
+            # return HttpResponseRedirect(reverse("main:list", kwargs=context))
     return context

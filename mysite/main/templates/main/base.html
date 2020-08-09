@@ -16,6 +16,7 @@
         .sidenav{
             height:10%;
             width: 100%;
+            padding-top: 3px;
             position: sticky;
             background-color: #111;
             overflow-x: hidden;
@@ -49,15 +50,20 @@
         .sidenav .icon{
             display:none;
         }
-        .sidenav .searchbar-icon svg{
+        .searchbar-icon svg{
             padding-top: 5px;
         }
-        .sidenav .searchbar{
+        .searchbar{
             max-width: 30%;
             width: 400px;
             margin: 5px 5px;
             position:static;
             float: left;
+        }
+        .searchbar ul{
+            position: fixed;
+            width: inherit;
+            background-color: cornsilk;
         }
         @media screen and (max-width: 800px){
             .sidenav .account{display: none;}
@@ -241,6 +247,13 @@
                     <form method="GET">
                         <input type="text" class="form-control" name="q" id="id_q" placeholder="Search..." value="{{query}}">
                     </form>
+                    <ul>
+                        {% if query %}
+                            {% for p in profiles%}
+                                <li>{{p}}</li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
             <a href="javascript:void(0);" class="icon" onclick="showSidenav()">
@@ -276,7 +289,11 @@
     </div>
 
     <div id="content", name="content", class="main">
-        <p>{{query}}</p>
+        {% if query %}
+            {% for p in profiles%}
+                <p>{{p}}</p>
+            {% endfor %}
+        {% endif %}
         <div class="row justify-content-center"> 
             {% if messages %}
             <div class="messages col-8">

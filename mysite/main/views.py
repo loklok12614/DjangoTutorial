@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -77,16 +78,14 @@ def create(response):
         form = CreateNewList()
     return render(response, "main/create.html", {"form":form})
 
-@login_required
 def get_queryset(query = None):
     queryset = []
     queries = query.split(" ")
     for q in queries:
-        users = User.objects.filter(
-            Q(username__icontains=q) |
-            Q(email__icontains=q)
+        profiles = User.objects.filter(
+            Q(username__icontains=q)
         ).distinct()
         
-        for user in users:
-            queryset.append(user)
-    return list(set(queryset))
+        for profile in profiles:
+            queryset.append(profile)
+    return queryset
