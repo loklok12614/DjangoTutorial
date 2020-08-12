@@ -8,7 +8,6 @@ from .models import ToDoList, Item, Item1, MovieList, Movie
 from .form import CreateNewList
 
 # Create your views here.
-@login_required
 def index(response):
     return render(response, "main/base.html", {})
 
@@ -23,12 +22,14 @@ def index1(response, name):
 
 @login_required
 def allList(response):
-    ls = response.user.todolist_set.all()
-    return render(response, "main/allList.html", {"ls":ls})
+    context = {}
+    context['ls'] = response.user.todolist_set.all()
+    return render(response, "main/allList.html", context)
 
 @login_required
 def list(response, id):
     # ls = ToDoList.objects.get(id=id)
+    context = {}
     ls = get_object_or_404(ToDoList, id=id)
     if response.method == "POST":
         if response.POST.get("save"):
@@ -60,23 +61,27 @@ def list(response, id):
             if response.POST.get("delete" + str(item.id)):
                 item.delete()
                 messages.info(response, "Item <strong>%s</strong> has been deleted!" %item.text, extra_tags="safe")
-    return render(response, "main/list.html", {"ls":ls})
+    context['ls'] = ls
+    return render(response, "main/list.html", context)
     
 def home(response):
-    return render(response, "main/home.html", {})
+    context = {}
+    return render(response, "main/home.html", context)
 
 @login_required
 def create(response):
+    context = {}
     if response.method == "POST":
         form = CreateNewList(response.POST)
         if form.is_valid():
             n = form.cleaned_data["name"]
             l = response.user.todolist_set.create(name=n)
             messages.success(response, "New List <strong>'{0}'</strong> Created! Click <a href='/list/{1}'>here</a> to view.".format(n, l.id), extra_tags="safe")
-        #return HttpResponseRedirect("/list/%i" %t.id)
+        return HttpResponseRedirect("/list/%i" %l.id)
     else:
         form = CreateNewList()
-    return render(response, "main/create.html", {"form":form})
+    context['form'] = form
+    return render(response, "main/create.html", context)
 
 def get_queryset(query = None):
     queryset = []
