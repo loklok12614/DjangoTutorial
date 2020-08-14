@@ -104,7 +104,7 @@
                     {% endif %} -->
                     {% if profiles %}
                         {% for profile in profiles %}
-                            <p>{{profile}}</p>
+                            <p>{{profile.username}}</p>
                         {% endfor %}
                     {% endif %}
                 </ul>
@@ -158,10 +158,24 @@
     }
 
     document.getElementById("id_q").value = "{{query}}"
+    
+    let profiles_json = (("{{profiles}}").replace(/&(l|g|quo)t;/g, function(a, b){
+        return {
+            l : '<',
+            g : '>',
+            quo: '"'
+        } [b];
+    }));
 
-    const usernames = '{{profiles}}';
+    let profiles = JSON.parse(profiles_json);
     '{% for profile in profiles %}'
-        console.log('{{profile}}');
+        
     '{% endfor %}'
-    console.log(usernames);
+    profiles.forEach(profile => {
+        console.log(profile[0]);
+    })
+
+    function findMatches(wordToMatch, data){
+
+    }
 </script>

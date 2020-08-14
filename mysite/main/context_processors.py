@@ -3,12 +3,20 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db.models import Q
 import urllib
+
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+
 from main.views import get_queryset
 
 
 def add_variable_to_context(request):
     context = {}
-    context['profiles'] = User.objects.all()
+    profiles = User.objects.all().values_list('username', 'email')
+    profiles_json = json.dumps(list(profiles), cls=DjangoJSONEncoder)
+    context["profiles"] = profiles_json
+
+    # context['profiles'] = [{'username': profile.username, 'email': profile.email} for profile in profiles]
     # query = ""
     # if request.GET:
     #     if(request.GET['q']):
