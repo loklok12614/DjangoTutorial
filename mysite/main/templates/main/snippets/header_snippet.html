@@ -46,11 +46,19 @@
         position:static;
         float: left;
     }
-    .searchbar ul{
+    .searchbar .search_result{
+        display: none;
         position: fixed;
         max-width: inherit;
         width: inherit;
-        background-color: cornsilk;
+        background-color: white;
+    }
+    .searchbar .search_result.has_result{
+        display: block;
+    }
+    .searchbar .search_result a{
+        font-size: 12px;
+        float: none;        
     }
     @media screen and (max-width: 800px){
         .sidenav .account{display: none;}
@@ -94,20 +102,15 @@
             </a>
             <div class="searchbar">
                 <form method="GET">
-                    <input type="text" class="form-control" name="q" id="id_q" placeholder="Search..." value="{{query}}">
+                    <input type="text" class="form-control search_input" name="q" id="id_q" placeholder="Search..." value="" autocomplete="off">
                 </form>
-                <ul>
-                    <!-- {% if query %}
-                        {% for p in profiles%}
-                            <li>{{p}}</li>
-                        {% endfor %}
-                    {% endif %} -->
+                <div class="search_result">
                     {% if profiles %}
                         {% for profile in profiles %}
                             <p>{{profile.username}}</p>
                         {% endfor %}
                     {% endif %}
-                </ul>
+                </div>
             </div>
         </div>
         <a href="javascript:void(0);" class="icon" onclick="showSidenav()">
@@ -168,14 +171,42 @@
     }));
 
     let profiles = JSON.parse(profiles_json);
-    '{% for profile in profiles %}'
-        
-    '{% endfor %}'
+
     profiles.forEach(profile => {
         console.log(profile[0]);
     })
 
     function findMatches(wordToMatch, data){
-
+        return data.filter(profile => {
+            const regex = new RegExp(wordToMatch, 'gi');
+            return profile[0].match(regex);
+        });
     }
+    function displayMatches(){
+        if(this.value){
+            const wordToMatch = '^' + this.value;
+            const matchArray = findMatches(wordToMatch, profiles);
+            if(matchArray.length){
+                const html = matchArray.map(profile => {
+                const regex = new RegExp(this.value, 'gi');
+                return `
+                    <div><a>${profile[0]}</a></div>
+                `;
+                }).join('');
+                searchResults.innerHTML = html;
+                searchResults.className = 'search_result has_result';
+            }
+        }
+        else{
+            searchResults.innerHTML = ``;
+            searchResults.className = 'search_result';
+        }
+    }
+
+    const searchInput = document.querySelector('.search_input');
+    const searchResults = document.querySelector('.search_result');
+
+    searchInput.addEventListener('change', displayMatches);
+    searchInput.addEventListener('keyup', displayMatches);
+
 </script>
