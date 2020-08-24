@@ -12,7 +12,7 @@ from main.views import get_queryset
 
 def add_variable_to_context(request):
     context = {}
-    profiles = User.objects.all().values_list('username', 'email', 'id')
+    profiles = User.objects.all().values_list('username', 'email')
     profiles_json = json.dumps(list(profiles), cls=DjangoJSONEncoder)
     context["profiles"] = profiles_json
 

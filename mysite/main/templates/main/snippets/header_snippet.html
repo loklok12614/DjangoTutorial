@@ -187,7 +187,7 @@
                 const html = matchArray.map(profile => {
                 const regex = new RegExp(this.value, 'gi');
                 return `
-                    <div><a href='/albums/users/${profile[2]}'>${profile[0]}</a></div>
+                    <div><a href='/albums/users/${profile[0]}'>${profile[0]}</a></div>
                 `;
                 }).join('');
                 searchResults.innerHTML = html;

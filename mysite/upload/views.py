@@ -62,8 +62,8 @@ def album(response, id):
     photoalbum = response.user.photoalbum_set.get(id=id)
     return render(response, "upload/album.html", {"photoalbum":photoalbum})
 
-def UserAlbumsList(response, pk):
-    the_user = User.objects.get(pk= pk)
+def UserAlbumsList(response, username):
+    the_user = User.objects.get(username = username)
     albums = the_user.photoalbum_set.all()
     return render(response, "upload/user_albums.html", {"albums":albums, "the_user":the_user})
 
