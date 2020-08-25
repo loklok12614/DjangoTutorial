@@ -82,15 +82,3 @@ def create(response):
         form = CreateNewList()
     context['form'] = form
     return render(response, "main/create.html", context)
-
-def get_queryset(query = None):
-    queryset = []
-    queries = query.split(" ")
-    for q in queries:
-        profiles = User.objects.filter(
-            Q(username__icontains=q)
-        ).distinct()
-        
-        for profile in profiles:
-            queryset.append(profile)
-    return queryset

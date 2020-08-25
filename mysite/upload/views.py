@@ -28,7 +28,7 @@ class AlbumsView(View):
     albums_images = []
     albums_dict = dict()
     form = CreateNewAlbum
-    initial = {'title': 'new'}
+    initial = {'title': ''}
     template_name = 'upload/albums.html'
 
     def setup(self, request, *args, **kwargs):
@@ -36,6 +36,7 @@ class AlbumsView(View):
         self.args = args
         self.kwargs = kwargs
         self.albums = request.user.photoalbum_set.all()
+        self.albums_images = []
         for album in self.albums:
             images = album.photo_set.first()
             self.albums_images.append(images)
@@ -50,11 +51,12 @@ class AlbumsView(View):
         form = self.form(request.POST)
         if form.is_valid():
             t = form.cleaned_data["title"]
-            if(request.user.photoalbum_set.get(title=t)):
+            if(request.user.photoalbum_set.filter(title=t).exists()):
                 messages.warning(request, "Album with the name <strong>'{0}'</strong> already exist! Please choose another name.".format(t), extra_tags="safe")
             else:
                 newAlbum = request.user.photoalbum_set.create(title=t)
                 messages.success(request, "New Album <strong>'{0}'</strong> Created! Click <a href='/album/{1}'>here</a> to view.".format(t, newAlbum.id), extra_tags="safe")
+                self.albums = request.user.photoalbum_set.all()
         return render(request, self.template_name, {"form":form, "albums":self.albums, "albums_images":self.albums_images, "albums_dict":self.albums_dict})
 
 @login_required
